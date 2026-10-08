@@ -4,38 +4,41 @@ import streamlit as st
 from PIL import Image
 from googletrans import Translator
 
-st.title('Análisis de Sentimiento')
-image = Image.open('emoticones.jpg')
+st.title('🌈 Espejo de Emociones')
+image = Image.open('portada.jpg')
 st.image(image)
-st.subheader("Por favor escribe en el campo de texto la frase que deseas analizar")
+st.subheader("✨ Cuéntame cómo te sientes hoy y te responderé desde el corazón")
 
 translator = Translator()
 
 with st.sidebar:
-               st.subheader("Polaridad y Subjetividad")
+               st.subheader("🧭 Cómo leo tus emociones")
                ("""
-                Polaridad: Indica si el sentimiento expresado en el texto es positivo, negativo o neutral. 
-                Su valor oscila entre -1 (muy negativo) y 1 (muy positivo), con 0 representando un sentimiento neutral.
-                
-               Subjetividad: Mide cuánto del contenido es subjetivo (opiniones, emociones, creencias) frente a objetivo
-               (hechos). Va de 0 a 1, donde 0 es completamente objetivo y 1 es completamente subjetivo.
+                💗 Polaridad: Es la brújula de tu ánimo. Va de -1 (un día muy pesado)
+                a 1 (un día radiante), y el 0 marca un estado de calma o neutralidad.
+
+                🎭 Subjetividad: Me dice cuánto de tu frase nace de tus emociones y
+                opiniones (cerca de 1) y cuánto de hechos concretos (cerca de 0).
 
                  """
                ) 
 
-with st.expander('Analizar texto'):
-    text = st.text_input('Escribe por favor: ')
+with st.expander('📓 Abrir mi diario emocional'):
+    text = st.text_input('Escribe lo que sientes en este momento: ')
     if text:
 
         translation = translator.translate(text, src="es", dest="en")
         trans_text = translation.text
         blob = TextBlob(trans_text)
-        st.write('Polarity: ', round(blob.sentiment.polarity,2))
-        st.write('Subjectivity: ', round(blob.sentiment.subjectivity,2))
+        st.write('💗 Nivel de ánimo (polaridad): ', round(blob.sentiment.polarity,2))
+        st.write('🎭 Carga emocional (subjetividad): ', round(blob.sentiment.subjectivity,2))
         x=round(blob.sentiment.polarity,2)
         if x > 0.0 and x <=1.0:
-            st.write( 'Es un sentimiento Positivo 😊')
-        elif x >=-1 and x <= 0:
-            st.write( 'Es un sentimiento Negativo 😔')
+            st.write('😊 Tu energía es Positiva')
+            st.write('🌟 ¡Qué bonito leerte así! Guarda este momento: es combustible para los días difíciles. Compártelo con alguien que quieras.')
+        elif x < 0.0 and x >= -1.0:
+            st.write('😔 Tu energía es Negativa')
+            st.write('🫂 Gracias por confiar en mí. Respira profundo, tómate un vaso de agua y recuerda que los días pesados también pasan. Habla con alguien de confianza si lo necesitas.')
         else:
-            st.write( 'Es un sentimiento Neutral 😐')
+            st.write('😐 Tu energía es Neutral')
+            st.write('🍃 Un día en calma. Buen momento para hacer una pausa, escuchar tu música favorita o planear algo que te ilusione.')
